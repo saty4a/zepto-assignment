@@ -4,21 +4,22 @@ import person from "../assets/person.png";
 
 const TagsInput = () => {
   const textData = [
-    { name: "satya", mail: "satya123@gmail.com" },
-    { name: "sagar", mail: "sagar@gmail.com" },
-    { name: "akshay", mail: "akshay@gmail.com" },
-    { name: "xyz", mail: "xyz@gmail.com" },
-    { name: "swasti", mail: "swasti@gmail.com" },
-    { name: "akash", mail: "akash@gmail.com" },
-    { name: "ashu", mail: "ashu@gmail.com" },
-    { name: "deepak", mail: "deepak@gmail.com" },
-    { name: "manas", mail: "manas@gmail.com" },
-    { name: "om", mail: "om@gmail.com" },
+    { name: "satya biswal", mail: "satya123@gmail.com" },
+    { name: "sagar kumar", mail: "sagar@gmail.com" },
+    { name: "akshay kumar", mail: "akshay@gmail.com" },
+    { name: "xyz swain", mail: "xyz@gmail.com" },
+    { name: "swasti behera", mail: "swasti@gmail.com" },
+    { name: "akash sharma", mail: "akash@gmail.com" },
+    { name: "ashu mohanty", mail: "ashu@gmail.com" },
+    { name: "deepak patra", mail: "deepak@gmail.com" },
+    { name: "manas munda", mail: "manas@gmail.com" },
+    { name: "omm mishra", mail: "om@gmail.com" },
   ];
   const [tags, setTags] = useState<any>([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [suggestionData, setSuggestionData] = useState<any>([]);
   const [stylediv, setStyleDiv] = useState("");
+  const [text, setText] = useState("");
 
   //initialize the suggestion data
   useEffect(() => {
@@ -42,8 +43,11 @@ const TagsInput = () => {
   const handleSuggestionData = () => {
     if (tags.length > 0) {
       const newData = generateNewData();
-      if (newData && newData.length > 0) {
+      if (newData && newData.length > 0 && tags.length !== textData.length) {
         setSuggestionData(newData);
+      }
+      else {
+        setSuggestionData([]);
       }
     } else {
       setSuggestionData(textData);
@@ -57,19 +61,13 @@ const TagsInput = () => {
 
   //input chips
   const handleKeyDown = (data: any) => {
-    if (data.target !== undefined && data.target.value !== "") {
+    if (data!== "") {
         setShowSuggestion(true);
-      if (textData.find((text) => text.name === data.target.value)) {
-        if (!tags.includes(data.target.value.toLowerCase())) {
-          setTags([...tags, data.target.value.toLowerCase()]);
-          data.target.value = "";
-          setShowSuggestion(false);
+      if (textData.find((text) => text.name === data.toLowerCase())) {
+        if (!tags.includes(data.toLowerCase())) {
+          setTags([...tags, data.toLowerCase()]);
+          setText("");
         }
-      }
-    } else {
-      if (!tags.includes(data)) {
-        setShowSuggestion(false);
-        setTags([...tags, data]);
       }
     }
   };
@@ -85,6 +83,14 @@ const TagsInput = () => {
     );
     if (stylediv !== "") {
       setStyleDiv("");
+    }
+    if (tags.length > 1) {
+        setShowSuggestion(false);
+        setTimeout(() =>{
+            setShowSuggestion(true)
+        },500)
+    }else {
+        setShowSuggestion(false);
     }
   };
 
@@ -121,7 +127,7 @@ const TagsInput = () => {
   //highlight the last chip
   const highlight = (e: any) => {
     if (e.target.value === "") {
-      if (stylediv === "") {
+      if (stylediv === "" && tags.length > 0) {
         setStyleDiv(" highlight-properties");
       }
       if (stylediv !== "") {
@@ -161,20 +167,22 @@ const TagsInput = () => {
           ))}
           <input
             type="text"
+            value={text}
             onKeyDown={(e) =>
               e.key === "Enter"
-                ? handleKeyDown(e)
+                ? handleKeyDown(text)
                 : e.key === "Backspace"
                 ? highlight(e)
                 : ""
             }
             onChange={(e) => {
+                setText(e.target.value);
               editSuggestionDataWhileTyping(e);
             }}
             onPointerEnter={updateSuggestionPosition}
             onClick={()=> setShowSuggestion(true)}
             className="tagInput"
-            placeholder="type something"
+            placeholder="Add new user..."
           />
         </div>
         {showSuggestion ? (
@@ -182,13 +190,13 @@ const TagsInput = () => {
             {suggestionData &&
               suggestionData.map((data: any, index: number) => (
                 <div
-                  className="suggestion-contents"
+                  className="suggestion-contents text-start"
                   key={index}
                   onClick={(e) => handleKeyDown(data.name)}
                 >
                   <Image src={person} className="w-[3rem]" alt="alt-image" />
-                  <span className="text-xl">{data.name}</span>
-                  <span className="text-slate-400 text-sm">{data.mail}</span>
+                  <div className="text-xl w-[9rem] md:w-[10rem]">{data.name}</div>
+                  <div className="text-slate-400 text-sm">{data.mail}</div>
                 </div>
               ))}
           </div>

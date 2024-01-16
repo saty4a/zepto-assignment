@@ -81,6 +81,7 @@ body {
   gap: 0.5em;
   align-items: center;
   padding: 10px 10px;
+  text-align: start;
 }
 
 /* change color of suggestions contents */
@@ -100,7 +101,7 @@ body {
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1440px) {
   .suggestion{
     width: min(30vw, 600px);
   }
