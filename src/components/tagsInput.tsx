@@ -34,6 +34,7 @@ const TagsInput = () => {
         newData[index] = data;
       }
     });
+
     if (newData.length > 0) {
       return newData;
     }
@@ -45,8 +46,7 @@ const TagsInput = () => {
       const newData = generateNewData();
       if (newData && newData.length > 0 && tags.length !== textData.length) {
         setSuggestionData(newData);
-      }
-      else {
+      } else {
         setSuggestionData([]);
       }
     } else {
@@ -61,8 +61,8 @@ const TagsInput = () => {
 
   //input chips
   const handleKeyDown = (data: any) => {
-    if (data!== "") {
-        setShowSuggestion(true);
+    if (data !== "") {
+      setShowSuggestion(true);
       if (textData.find((text) => text.name === data.toLowerCase())) {
         if (!tags.includes(data.toLowerCase())) {
           setTags([...tags, data.toLowerCase()]);
@@ -81,25 +81,29 @@ const TagsInput = () => {
         }
       })
     );
+
     if (stylediv !== "") {
       setStyleDiv("");
     }
+
     if (tags.length > 1) {
-        setShowSuggestion(false);
-        setTimeout(() =>{
-            setShowSuggestion(true)
-        },500)
-    }else {
-        setShowSuggestion(false);
+      setShowSuggestion(false);
+      setTimeout(() => {
+        setShowSuggestion(true);
+      }, 500);
+    } else {
+      setShowSuggestion(false);
     }
   };
 
   //show suggestions that match what you are typing
   const editSuggestionDataWhileTyping = (e: any) => {
     if (e.target.value !== "") {
-        setShowSuggestion(true);
+      setShowSuggestion(true);
+
       if (tags.length > 0) {
         const newData = generateNewData();
+
         if (newData && newData.length > 0) {
           setSuggestionData(
             newData.filter((text: any) => {
@@ -119,7 +123,7 @@ const TagsInput = () => {
         );
       }
     } else {
-        setShowSuggestion(false);
+      setShowSuggestion(false);
       handleSuggestionData();
     }
   };
@@ -147,63 +151,63 @@ const TagsInput = () => {
 
   return (
     <div>
-        <div className="tagsInputContainer">
-          {tags.map((tag: any, index: number) => (
-            <div
-              className={
-                `tagItem` + (index === tags.length - 1 ? `${stylediv}` : "")
-              }
-              key={index}
-            >
-              <Image src={person} className="w-[2rem]" alt="alt-image" />
-              <span className="text">{tag}</span>
-              <span
-                className="close cursor-pointer"
-                onClick={() => removeChip(index)}
-              >
-                &times;
-              </span>
-            </div>
-          ))}
-          <input
-            type="text"
-            value={text}
-            onKeyDown={(e) =>
-              e.key === "Enter"
-                ? handleKeyDown(text)
-                : e.key === "Backspace"
-                ? highlight(e)
-                : ""
+      <div className="tagsInputContainer">
+        {tags.map((tag: any, index: number) => (
+          <div
+            className={
+              `tagItem` + (index === tags.length - 1 ? `${stylediv}` : "")
             }
-            onChange={(e) => {
-                setText(e.target.value);
-              editSuggestionDataWhileTyping(e);
-            }}
-            onPointerEnter={updateSuggestionPosition}
-            onClick={()=> setShowSuggestion(true)}
-            className="tagInput"
-            placeholder="Add new user..."
-          />
-        </div>
-        {showSuggestion ? (
-          <div className="suggestion" id="suggestion-box">
-            {suggestionData &&
-              suggestionData.map((data: any, index: number) => (
-                <div
-                  className="suggestion-contents text-start"
-                  key={index}
-                  onClick={(e) => handleKeyDown(data.name)}
-                >
-                  <Image src={person} className="w-[3rem]" alt="alt-image" />
-                  <div className="text-xl w-[9rem] md:w-[10rem]">{data.name}</div>
-                  <div className="text-slate-400 text-sm">{data.mail}</div>
-                </div>
-              ))}
+            key={index}
+          >
+            <Image src={person} className="w-[2rem]" alt="alt-image" />
+            <span className="text">{tag}</span>
+            <span
+              className="close cursor-pointer"
+              onClick={() => removeChip(index)}
+            >
+              &times;
+            </span>
           </div>
-        ) : (
-          ""
-        )}
+        ))}
+        <input
+          type="text"
+          value={text}
+          onKeyDown={(e) =>
+            e.key === "Enter"
+              ? handleKeyDown(text)
+              : e.key === "Backspace"
+              ? highlight(e)
+              : ""
+          }
+          onChange={(e) => {
+            setText(e.target.value);
+            editSuggestionDataWhileTyping(e);
+          }}
+          onPointerEnter={updateSuggestionPosition}
+          onClick={() => setShowSuggestion(true)}
+          className="tagInput"
+          placeholder="Add new user..."
+        />
       </div>
+      {showSuggestion ? (
+        <div className="suggestion" id="suggestion-box">
+          {suggestionData &&
+            suggestionData.map((data: any, index: number) => (
+              <div
+                className="suggestion-contents text-start"
+                key={index}
+                onClick={(e) => handleKeyDown(data.name)}
+              >
+                <Image src={person} className="w-[3rem]" alt="alt-image" />
+                <div className="text-xl w-[9rem] md:w-[10rem]">{data.name}</div>
+                <div className="text-slate-400 text-sm">{data.mail}</div>
+              </div>
+            ))}
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 
